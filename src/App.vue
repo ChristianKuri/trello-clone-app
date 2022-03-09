@@ -14,6 +14,20 @@ const boardStore = useBoardStore()
         <div class="flex items-center mb-2 font-bold">
           {{ column.name }}
         </div>
+        <div>
+          <div
+            class="flex flex-wrap items-center px-2 py-2 mb-2 text-gray-900 no-underline bg-white rounded shadow"
+            v-for="task of column.tasks"
+            :key="task.id"
+          >
+            <span class="w-full font-bold shrink-0">
+              {{ task.name }}
+            </span>
+            <p class="w-full mt-1 text-sm shrink-0" v-if="task.description">
+              {{ task.description }}
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   </div>

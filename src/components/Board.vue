@@ -23,6 +23,13 @@
               {{ task.description }}
             </p>
           </div>
+
+          <input
+            type="text"
+            class="block w-full p-2 bg-transparent"
+            placeholder="+ Enter new task"
+            @keyup.enter="createTask(column.name, $event)"
+          />
         </div>
       </div>
     </div>
@@ -65,6 +72,12 @@ export default {
   methods: {
     selectTask(task) {
       this.selectedTask = task
+    },
+    createTask(columnName, event) {
+      if (event.target.value) {
+        this.boardStore.createTask(columnName, event.target.value)
+        event.target.value = ''
+      }
     },
   },
 }

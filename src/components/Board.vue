@@ -1,0 +1,73 @@
+<template>
+  <div class="h-full p-4 overflow-auto bg-teal-600">
+    <div class="flex flex-row items-start">
+      <div
+        class="p-2 mr-4 text-left bg-gray-200 rounded shadow min-w column min-w-350px"
+        v-for="(column, key) of boardStore.data.columns"
+        :key="key"
+      >
+        <div class="flex items-center mb-2 font-bold">
+          {{ column.name }}
+        </div>
+        <div>
+          <div
+            class="flex flex-wrap items-center px-2 py-2 mb-2 text-gray-900 no-underline bg-white rounded shadow"
+            v-for="task of column.tasks"
+            :key="task.id"
+            @click="selectTask(task)"
+          >
+            <span class="w-full font-bold shrink-0">
+              {{ task.name }}
+            </span>
+            <p class="w-full mt-1 text-sm shrink-0" v-if="task.description">
+              {{ task.description }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div
+      class="absolute inset-0 bg-gray-900 bg-opacity-70"
+      v-if="isTaskOpen"
+      @click.self="selectedTask = null"
+    >
+      <Task :task="selectedTask" />
+    </div>
+  </div>
+</template>
+
+<script>
+import Task from './Task.vue'
+
+export default {
+  components: {
+    Task,
+  },
+  name: 'Board',
+  props: {
+    boardStore: {
+      type: Object,
+      required: true,
+    },
+  },
+  data() {
+    return {
+      selectedTask: null,
+    }
+  },
+  computed: {
+    isTaskOpen() {
+      return this.selectedTask !== null
+    },
+  },
+  methods: {
+    selectTask(task) {
+      this.selectedTask = task
+    },
+  },
+}
+</script>
+
+<style></style>

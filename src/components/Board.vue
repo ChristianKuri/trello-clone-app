@@ -21,7 +21,7 @@
             :key="task.id"
             @click="selectTask(task)"
             draggable="true"
-            @dragstart="pickupTask($event, taskIndex, column.name)"
+            @dragstart="pickupTask($event, taskIndex, columnIndex)"
             @dragover.prevent
             @dragenter.prevent
             @drop.stop="moveTaskOrColumn($event, columnIndex, taskIndex)"
@@ -91,11 +91,11 @@ export default {
       }
     },
 
-    pickupTask(event, fromTaskIndex, fromColumnName) {
+    pickupTask(event, fromTaskIndex, fromColumnIndex) {
       event.dataTransfer.effectAllowed = 'move'
       event.dataTransfer.dropEffect = 'move'
       event.dataTransfer.setData('from-task-index', fromTaskIndex)
-      event.dataTransfer.setData('from-column-name', fromColumnName)
+      event.dataTransfer.setData('from-column-index', fromColumnIndex)
       event.dataTransfer.setData('type', 'task')
     },
 
@@ -117,10 +117,10 @@ export default {
     },
 
     moveTask(event, toColumnIndex, toTaskIndex = null) {
-      const fromColumnName = event.dataTransfer.getData('from-column-name')
+      const fromColumnIndex = event.dataTransfer.getData('from-column-index')
       const fromTaskIndex = event.dataTransfer.getData('from-task-index')
       this.boardStore.moveTask(
-        fromColumnName,
+        fromColumnIndex,
         toColumnIndex,
         fromTaskIndex,
         toTaskIndex,

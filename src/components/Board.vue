@@ -24,7 +24,7 @@
             @dragstart="pickupTask($event, taskIndex, column.name)"
             @dragover.prevent
             @dragenter.prevent
-            @drop.stop="moveTask($event, columnIndex, taskIndex)"
+            @drop.stop="moveTaskOrColumn($event, columnIndex, taskIndex)"
           >
             <span class="w-full font-bold shrink-0">
               {{ task.name }}
@@ -106,11 +106,11 @@ export default {
       event.dataTransfer.setData('type', 'column')
     },
 
-    moveTaskOrColumn(event, toColumnIndex) {
+    moveTaskOrColumn(event, toColumnIndex, toTaskIndex = null) {
       const type = event.dataTransfer.getData('type')
 
       if (type === 'task') {
-        this.moveTask(event, toColumnIndex)
+        this.moveTask(event, toColumnIndex, toTaskIndex)
       } else {
         this.moveColumn(event, toColumnIndex)
       }

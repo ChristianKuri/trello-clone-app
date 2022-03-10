@@ -1,6 +1,7 @@
 <template>
   <div class="min-h-screen p-4 overflow-auto bg-teal-600">
     <div class="flex flex-row items-start">
+      <!-- Start columns -->
       <div
         class="p-2 mr-4 text-left bg-gray-200 rounded shadow min-w column min-w-350px"
         v-for="(column, columnIndex) of boardStore.data.columns"
@@ -41,6 +42,19 @@
             @keyup.enter="createTask(column.name, $event)"
           />
         </div>
+      </div>
+      <!-- End columns -->
+
+      <!-- Create new column -->
+      <div
+        class="flex p-2 mr-4 text-left bg-gray-200 rounded shadow min-w column min-w-350px"
+      >
+        <input
+          type="text"
+          @keyup.enter="createColumn($event)"
+          class="flex-grow p-2 mr-2 bg-transparent"
+          placeholder="+ Enter new column"
+        />
       </div>
     </div>
 
@@ -87,6 +101,13 @@ export default {
     createTask(columnName, event) {
       if (event.target.value) {
         this.boardStore.createTask(columnName, event.target.value)
+        event.target.value = ''
+      }
+    },
+
+    createColumn(event) {
+      if (event.target.value) {
+        this.boardStore.createColumn(event.target.value)
         event.target.value = ''
       }
     },

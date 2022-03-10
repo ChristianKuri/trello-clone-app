@@ -21,6 +21,13 @@ export const useBoardStore = defineStore('BoardStore', {
       })
     },
 
+    createColumn(columnName) {
+      this.data.columns.push({
+        name: columnName,
+        tasks: [],
+      })
+    },
+
     moveTask(fromColumnIndex, toColumnIndex, fromTaskIndex, toTaskIndex = null) {
       const fromColumn = this.data.columns[fromColumnIndex]
       const toColumn = this.data.columns[toColumnIndex]

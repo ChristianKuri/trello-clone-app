@@ -21,14 +21,17 @@ export const useBoardStore = defineStore('BoardStore', {
       })
     },
 
-    moveTask(fromColumnName, toColumnIndex, taskId) {
+    moveTask(fromColumnName, toColumnIndex, fromTaskIndex, toTaskIndex = null) {
       const fromColumn = this.data.columns.filter(c => c.name === fromColumnName)[0]
       const toColumn = this.data.columns[toColumnIndex]
-      const taskIndex = fromColumn.tasks.findIndex(t => t.id === taskId)
-      const task = fromColumn.tasks[taskIndex]
+      const task = fromColumn.tasks.splice(fromTaskIndex, 1)[0]
 
-      toColumn.tasks.push(task)
-      fromColumn.tasks.splice(taskIndex, 1)
+      if (toTaskIndex === null) {
+        toColumn.tasks.push(task)
+      } else {
+        toColumn.tasks.splice(toTaskIndex, 0, task)
+      }
+
     },
 
     moveColumn(fromIndex, toIndex) {

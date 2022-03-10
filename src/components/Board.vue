@@ -17,11 +17,14 @@
         <div>
           <div
             class="flex flex-wrap items-center px-2 py-2 mb-2 text-gray-900 no-underline bg-white rounded shadow"
-            v-for="task of column.tasks"
+            v-for="(task, taskIndex) of column.tasks"
             :key="task.id"
             @click="selectTask(task)"
             draggable="true"
-            @dragstart="pickupTask($event, task.id, column.name)"
+            @dragstart="pickupTask($event, taskIndex, column.name)"
+            @dragover.prevent
+            @dragenter.prevent
+            @drop.stop="moveTask($event, columnIndex, taskIndex)"
           >
             <span class="w-full font-bold shrink-0">
               {{ task.name }}
@@ -88,10 +91,10 @@ export default {
       }
     },
 
-    pickupTask(event, taskId, fromColumnName) {
+    pickupTask(event, fromTaskIndex, fromColumnName) {
       event.dataTransfer.effectAllowed = 'move'
       event.dataTransfer.dropEffect = 'move'
-      event.dataTransfer.setData('task-id', taskId)
+      event.dataTransfer.setData('from-task-index', fromTaskIndex)
       event.dataTransfer.setData('from-column-name', fromColumnName)
       event.dataTransfer.setData('type', 'task')
     },
@@ -113,10 +116,15 @@ export default {
       }
     },
 
-    moveTask(event, toColumnIndex) {
+    moveTask(event, toColumnIndex, toTaskIndex = null) {
       const fromColumnName = event.dataTransfer.getData('from-column-name')
-      const taskId = event.dataTransfer.getData('task-id')
-      this.boardStore.moveTask(fromColumnName, toColumnIndex, taskId)
+      const fromTaskIndex = event.dataTransfer.getData('from-task-index')
+      this.boardStore.moveTask(
+        fromColumnName,
+        toColumnIndex,
+        fromTaskIndex,
+        toTaskIndex,
+      )
     },
 
     moveColumn(event, toIndex) {

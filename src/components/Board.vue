@@ -1,5 +1,5 @@
 <template>
-  <div class="h-full p-4 overflow-auto bg-teal-600">
+  <div class="min-h-screen p-4 overflow-auto bg-teal-600">
     <div class="flex flex-row items-start">
       <div
         class="p-2 mr-4 text-left bg-gray-200 rounded shadow min-w column min-w-350px"

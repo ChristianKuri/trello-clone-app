@@ -1,11 +1,7 @@
-<script setup>
-import { useBoardStore } from './stores/BoardStore'
-
-const boardStore = useBoardStore()
-</script>
+<script setup></script>
 
 <template>
-  <Board :boardStore="boardStore" />
+  <Board />
 </template>
 
 <style lang="css">

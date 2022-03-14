@@ -84,18 +84,18 @@
 
 <script>
 import Task from './Task.vue'
+import { useBoardStore } from '../stores/BoardStore'
 
 export default {
+  setup() {
+    const boardStore = useBoardStore()
+
+    return { boardStore }
+  },
   components: {
     Task,
   },
   name: 'Board',
-  props: {
-    boardStore: {
-      type: Object,
-      required: true,
-    },
-  },
   data() {
     return {
       selectedTask: null,

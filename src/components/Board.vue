@@ -38,6 +38,7 @@
           </button>
         </div>
         <div>
+          <!-- Start tasks -->
           <div
             class="flex flex-wrap items-center px-2 py-2 mb-2 text-gray-900 no-underline bg-white rounded shadow"
             v-for="(task, taskIndex) of column.tasks"
@@ -80,7 +81,9 @@
               {{ task.description }}
             </p>
           </div>
+          <!-- End tasks -->
 
+          <!-- Create new task -->
           <input
             type="text"
             class="block w-full p-2 bg-transparent"

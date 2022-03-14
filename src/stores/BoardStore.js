@@ -39,6 +39,14 @@ export const useBoardStore = defineStore('BoardStore', {
       const column = this.data.columns[fromIndex]
       this.data.columns.splice(fromIndex, 1)
       this.data.columns.splice(toIndex, 0, column)
+    },
+
+    deleteColumn(index) {
+      this.data.columns.splice(index, 1)
+    },
+
+    deleteTask(columnIndex, taskIndex) {
+      this.data.columns[columnIndex].tasks.splice(taskIndex, 1)
     }
   }
 })

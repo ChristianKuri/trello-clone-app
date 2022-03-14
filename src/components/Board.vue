@@ -12,8 +12,11 @@
         draggable="true"
         @dragstart.self="pickUpColumn($event, columnIndex)"
       >
-        <div class="flex items-center mb-2 font-bold">
-          {{ column.name }}
+        <div class="flex items-center justify-between mb-2 font-bold">
+          <div>
+            {{ column.name }}
+          </div>
+          <button type="button" @click="deleteColumn(columnIndex)">X</button>
         </div>
         <div>
           <div
@@ -28,7 +31,17 @@
             @drop.stop="moveTaskOrColumn($event, columnIndex, taskIndex)"
           >
             <span class="w-full font-bold shrink-0">
-              {{ task.name }}
+              <div class="flex justify-between">
+                <div>
+                  {{ task.name }}
+                </div>
+                <button
+                  type="button"
+                  @click.stop="deleteTask(columnIndex, taskIndex)"
+                >
+                  X
+                </button>
+              </div>
             </span>
             <p class="w-full mt-1 text-sm shrink-0" v-if="task.description">
               {{ task.description }}
@@ -151,6 +164,14 @@ export default {
     moveColumn(event, toIndex) {
       const fromIndex = event.dataTransfer.getData('from-index')
       this.boardStore.moveColumn(fromIndex, toIndex)
+    },
+
+    deleteColumn(index) {
+      this.boardStore.deleteColumn(index)
+    },
+
+    deleteTask(columnIndex, taskIndex) {
+      this.boardStore.deleteTask(columnIndex, taskIndex)
     },
   },
 }

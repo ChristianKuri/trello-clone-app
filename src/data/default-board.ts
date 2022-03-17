@@ -1,4 +1,4 @@
-import uuid from '../utils/uuid';
+import uuid from '../utils/uuid'
 
 const boardData = {
   name: 'workshop',
@@ -10,21 +10,18 @@ const boardData = {
           description: '',
           name: 'first task',
           id: uuid(),
-          userAssigned: null
         },
         {
           description: '',
           name: 'second task',
           id: uuid(),
-          userAssigned: null
         },
         {
           description: '',
           name: 'and third',
           id: uuid(),
-          userAssigned: null
-        }
-      ]
+        },
+      ],
     },
     {
       name: 'in-progress',
@@ -33,9 +30,8 @@ const boardData = {
           description: '',
           name: 'first task',
           id: uuid(),
-          userAssigned: null
-        }
-      ]
+        },
+      ],
     },
     {
       name: 'done',
@@ -44,11 +40,10 @@ const boardData = {
           description: '',
           name: 'first task',
           id: uuid(),
-          userAssigned: null
-        }
-      ]
-    }
-  ]
+        },
+      ],
+    },
+  ],
 }
 
 export default boardData

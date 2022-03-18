@@ -1,7 +1,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import Task from './Task.vue'
-import { useBoardStore } from '../stores/BoardStore'
+import { useBoardStore } from '../stores/board-store'
 
 export default defineComponent({
   setup() {

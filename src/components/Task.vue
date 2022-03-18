@@ -1,3 +1,17 @@
+<script lang="ts" setup>
+const props = defineProps({
+  task: {
+    type: Object,
+    required: true,
+  },
+})
+
+const updateTaskProperty = (event: Event, property: string) => {
+  const target = event.target as HTMLInputElement
+  props.task[property] = target.value
+}
+</script>
+
 <template>
   <div
     class="relative inset-0 flex flex-col max-w-2xl py-4 m-32 mx-auto text-left bg-white rounded shadow"
@@ -17,21 +31,3 @@
     ></textarea>
   </div>
 </template>
-
-<script>
-export default {
-  props: {
-    task: {
-      type: Object,
-      required: true,
-    },
-  },
-  methods: {
-    updateTaskProperty(event, property) {
-      this.task[property] = event.target.value
-    },
-  },
-}
-</script>
-
-<style></style>

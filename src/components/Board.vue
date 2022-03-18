@@ -1,3 +1,99 @@
+<script lang="ts">
+import { defineComponent } from 'vue'
+import Task from './Task.vue'
+import { useBoardStore } from '../stores/BoardStore'
+
+export default defineComponent({
+  setup() {
+    const boardStore = useBoardStore()
+
+    return { boardStore }
+  },
+  components: {
+    Task,
+  },
+  name: 'Board',
+  data() {
+    return {
+      selectedTask: null,
+    }
+  },
+  computed: {
+    isTaskOpen() {
+      return this.selectedTask !== null
+    },
+  },
+  methods: {
+    selectTask(task) {
+      this.selectedTask = task
+    },
+
+    createTask(columnName, event) {
+      if (event.target.value) {
+        this.boardStore.createTask(columnName, event.target.value)
+        event.target.value = ''
+      }
+    },
+
+    createColumn(event) {
+      if (event.target.value) {
+        this.boardStore.createColumn(event.target.value)
+        event.target.value = ''
+      }
+    },
+
+    pickupTask(event, fromTaskIndex, fromColumnIndex) {
+      event.dataTransfer.effectAllowed = 'move'
+      event.dataTransfer.dropEffect = 'move'
+      event.dataTransfer.setData('from-task-index', fromTaskIndex)
+      event.dataTransfer.setData('from-column-index', fromColumnIndex)
+      event.dataTransfer.setData('type', 'task')
+    },
+
+    pickUpColumn(event, fromIndex) {
+      event.dataTransfer.effectAllowed = 'move'
+      event.dataTransfer.dropEffect = 'move'
+      event.dataTransfer.setData('from-index', fromIndex)
+      event.dataTransfer.setData('type', 'column')
+    },
+
+    moveTaskOrColumn(event, toColumnIndex, toTaskIndex = null) {
+      const type = event.dataTransfer.getData('type')
+
+      if (type === 'task') {
+        this.moveTask(event, toColumnIndex, toTaskIndex)
+      } else {
+        this.moveColumn(event, toColumnIndex)
+      }
+    },
+
+    moveTask(event, toColumnIndex, toTaskIndex = null) {
+      const fromColumnIndex = event.dataTransfer.getData('from-column-index')
+      const fromTaskIndex = event.dataTransfer.getData('from-task-index')
+      this.boardStore.moveTask(
+        fromColumnIndex,
+        toColumnIndex,
+        fromTaskIndex,
+        toTaskIndex,
+      )
+    },
+
+    moveColumn(event, toIndex) {
+      const fromIndex = event.dataTransfer.getData('from-index')
+      this.boardStore.moveColumn(fromIndex, toIndex)
+    },
+
+    deleteColumn(index) {
+      this.boardStore.deleteColumn(index)
+    },
+
+    deleteTask(columnIndex, taskIndex) {
+      this.boardStore.deleteTask(columnIndex, taskIndex)
+    },
+  },
+})
+</script>
+
 <template>
   <div class="min-h-screen p-4 overflow-auto bg-teal-600">
     <div class="flex flex-row items-start">
@@ -117,98 +213,3 @@
     </div>
   </div>
 </template>
-
-<script>
-import Task from './Task.vue'
-import { useBoardStore } from '../stores/BoardStore'
-
-export default {
-  setup() {
-    const boardStore = useBoardStore()
-
-    return { boardStore }
-  },
-  components: {
-    Task,
-  },
-  name: 'Board',
-  data() {
-    return {
-      selectedTask: null,
-    }
-  },
-  computed: {
-    isTaskOpen() {
-      return this.selectedTask !== null
-    },
-  },
-  methods: {
-    selectTask(task) {
-      this.selectedTask = task
-    },
-
-    createTask(columnName, event) {
-      if (event.target.value) {
-        this.boardStore.createTask(columnName, event.target.value)
-        event.target.value = ''
-      }
-    },
-
-    createColumn(event) {
-      if (event.target.value) {
-        this.boardStore.createColumn(event.target.value)
-        event.target.value = ''
-      }
-    },
-
-    pickupTask(event, fromTaskIndex, fromColumnIndex) {
-      event.dataTransfer.effectAllowed = 'move'
-      event.dataTransfer.dropEffect = 'move'
-      event.dataTransfer.setData('from-task-index', fromTaskIndex)
-      event.dataTransfer.setData('from-column-index', fromColumnIndex)
-      event.dataTransfer.setData('type', 'task')
-    },
-
-    pickUpColumn(event, fromIndex) {
-      event.dataTransfer.effectAllowed = 'move'
-      event.dataTransfer.dropEffect = 'move'
-      event.dataTransfer.setData('from-index', fromIndex)
-      event.dataTransfer.setData('type', 'column')
-    },
-
-    moveTaskOrColumn(event, toColumnIndex, toTaskIndex = null) {
-      const type = event.dataTransfer.getData('type')
-
-      if (type === 'task') {
-        this.moveTask(event, toColumnIndex, toTaskIndex)
-      } else {
-        this.moveColumn(event, toColumnIndex)
-      }
-    },
-
-    moveTask(event, toColumnIndex, toTaskIndex = null) {
-      const fromColumnIndex = event.dataTransfer.getData('from-column-index')
-      const fromTaskIndex = event.dataTransfer.getData('from-task-index')
-      this.boardStore.moveTask(
-        fromColumnIndex,
-        toColumnIndex,
-        fromTaskIndex,
-        toTaskIndex,
-      )
-    },
-
-    moveColumn(event, toIndex) {
-      const fromIndex = event.dataTransfer.getData('from-index')
-      this.boardStore.moveColumn(fromIndex, toIndex)
-    },
-
-    deleteColumn(index) {
-      this.boardStore.deleteColumn(index)
-    },
-
-    deleteTask(columnIndex, taskIndex) {
-      this.boardStore.deleteTask(columnIndex, taskIndex)
-    },
-  },
-}
-</script>

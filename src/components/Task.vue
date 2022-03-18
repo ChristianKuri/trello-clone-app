@@ -1,15 +1,20 @@
-<script lang="ts" setup>
-const props = defineProps({
-  task: {
-    type: Object,
-    required: true,
+<script lang="ts">
+import { defineComponent } from 'vue'
+
+export default defineComponent({
+  props: {
+    task: {
+      type: Object,
+      required: true,
+    },
+  },
+  methods: {
+    updateTaskProperty(event: Event, property: string) {
+      const target = event.target as HTMLInputElement
+      this.task[property] = target.value
+    },
   },
 })
-
-const updateTaskProperty = (event: Event, property: string) => {
-  const target = event.target as HTMLInputElement
-  props.task[property] = target.value
-}
 </script>
 
 <template>
